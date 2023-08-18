@@ -1,12 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
+import { MessagePattern } from '@nestjs/microservices';
+import Todo from './types/Todo';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @MessagePattern({ cmd: 'get' })
+  get() {
+    return this.appService.getTodos();
+  }
+
+  @MessagePattern({ cmd: 'add' })
+  add(data: Todo) {
+    return this.appService.addTodo(data);
   }
 }
