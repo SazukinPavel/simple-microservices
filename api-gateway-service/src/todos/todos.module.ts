@@ -7,8 +7,9 @@ import config from 'src/config';
   controllers: [TodosController],
   imports: [
     ClientsModule.register([
-      { name: config.todosServiceName, transport: Transport.TCP, options: { port: 8080 } },
+      { name: config.todosServiceName, transport: Transport.TCP, options: { port: +process.env.TODOS_SERVICE_PORT, host: process.env.TODOS_SERVICE_HOST } },
     ]),
+
   ]
 })
 export class TodosModule { }
