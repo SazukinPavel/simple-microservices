@@ -8,8 +8,9 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.TCP,
-      options:{
-        port:8080
+      options: {
+        port: +process.env.TODOS_SERVICE_PORT,
+        host: '0.0.0.0',
       }
     },
   );
