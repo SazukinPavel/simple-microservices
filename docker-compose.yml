@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  simple-microservices-api_gateway:
+    container_name: simple-microservices-api-gateway
+    restart: always
+    hostname: gateway
+    networks:
+      - server
+    build: ./api-gateway-service
+    env_file:
+      - .env
+    ports:
+      - $API_GATEWAY_PORT:$API_GATEWAY_PORT
+  simple-microservices-todos_service:
+    container_name: simple-microservices-todos_service
+    restart: always
+    hostname: $TODOS_SERVICE_HOST
+    networks:
+      - server
+    build: ./todos-service
+    env_file:
+      - .env
+  simple-microservices-logs_service:
+    container_name: simple-microservices-logs_service
+    restart: always
+    hostname: $LOGS_SERVICE_HOST
+    networks:
+      - server
+    build: ./logs-service
+    env_file:
+      - .env
+networks:
+  server:
+    driver: bridge
