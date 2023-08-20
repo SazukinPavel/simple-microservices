@@ -5,21 +5,20 @@ import Todo from 'src/types/Todo';
 
 @Controller('todos')
 export class TodosController {
+  constructor(
+    @Inject(config.todosServiceName) private readonly client: ClientProxy,
+  ) {}
 
-    constructor(
-        @Inject(config.todosServiceName) private readonly client: ClientProxy,
-    ) { }
+  @Get()
+  getTodos() {
+    const pattern = { cmd: 'get' };
+    return this.client.send<Todo[]>(pattern, {});
+  }
 
-    @Get()
-    getTodos() {
-        const pattern = { cmd: 'get' };
-        return this.client.send<Todo[]>(pattern, {})
-    }
-
-    @Post()
-    addTodo(@Body('message') message: string) {
-        const pattern = { cmd: 'add' };
-        const todo = { message, ts: Date.now() }
-        return this.client.send<any, Todo>(pattern, todo)
-    }
+  @Post()
+  addTodo(@Body('message') message: string) {
+    const pattern = { cmd: 'add' };
+    const todo = { message };
+    return this.client.send<any, Todo>(pattern, todo);
+  }
 }
