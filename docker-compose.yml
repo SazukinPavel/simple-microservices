@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   simple-microservices-api_gateway:
     container_name: simple-microservices-api-gateway
@@ -29,6 +29,23 @@ services:
     build: ./logs-service
     env_file:
       - .env
+    depends_on:
+      - simple-microservices-logs_mongo
+  simple-microservices-logs_mongo:
+    image: mongo:5.0.2
+    container_name: simple-microservices-logs_mongo
+    restart: unless-stopped
+    hostname: $LOGS_SERVICE_MONGO_HOST
+    networks:
+      - server
+    volumes:
+      - ./mongodb:/data/db
+    ports:
+      - $LOGS_SERVICE_MONGO_PORT:$LOGS_SERVICE_MONGO_PORT
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$LOGS_SERVICE_DATABASE_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$LOGS_SERVICE_DATABASE_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE=$LOGS_SERVICE_DATABASE_NAME
 networks:
   server:
     driver: bridge
