@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import Log from './types/Log';
+import { Log } from './models/log.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class AppService {
+  constructor(@InjectModel(Log.name) private readonly logModel: Model<Log>) {}
 
-  addLog(log: Log) {
-    console.log(log);
+  async addLog(log: Log) {
+    await this.logModel.create({ ...log });
   }
 }
