@@ -3,7 +3,7 @@ services:
   simple-microservices-api_gateway:
     container_name: simple-microservices-api-gateway
     restart: always
-    hostname: gateway
+    hostname: API_GATEWAY_HOST
     networks:
       - server
     build: ./api-gateway-service
@@ -20,6 +20,23 @@ services:
     build: ./todos-service
     env_file:
       - .env
+    depends_on:
+      - simple-microservices-todos_service_mysql
+  simple-microservices-todos_service_mysql:
+    container_name: simple-microservices-todos_service_mysql
+    image: mysql:5.7
+    restart: unless-stopped
+    hostname: $TODOS_SERVICE_MYSQL_HOST
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: $TODOS_SERVICE_MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $TODOS_SERVICE_MYSQL_ROOT_PASSWORD
+    ports:
+      - $TODOS_SERVICE_MYSQL_PORT:$TODOS_SERVICE_MYSQL_PORT
+    volumes:
+      - ./mysql-db:/docker-entrypoint-initdb.d/
+    networks:
+      - server
   simple-microservices-logs_service:
     container_name: simple-microservices-logs_service
     restart: always
