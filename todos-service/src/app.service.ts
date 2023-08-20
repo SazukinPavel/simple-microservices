@@ -1,29 +1,26 @@
-import { Inject, Injectable } from '@nestjs/common';
-import config from './config';
-import { Cache, Store } from 'cache-manager';
-import Todo from './types/Todo';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Injectable } from '@nestjs/common';
+import { Todo } from './entities/todo.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AppService {
-
-  constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) { }
+  constructor(
+    @InjectRepository(Todo)
+    private todosRepository: Repository<Todo>,
+  ) {}
 
   async getTodos() {
-    return { result: await this.cacheManager.get<Todo[]>('todos') };
+    return { result: await this.todosRepository.find() };
   }
 
   async addTodo(todo: Todo) {
-    let todos = (await this.getTodos()) as unknown as Todo[]
+    const newTodo = this.todosRepository.create({ ...todo });
 
-    if (!todos || !todos.length) {
-      todos = []
-    }
+    console.log(todo, newTodo);
 
-    todos.push(todo)
+    await this.todosRepository.save(newTodo);
 
-    await this.cacheManager.set('todos', todos, 180000)
-
-    return { result: true }
+    return { result: true };
   }
 }
