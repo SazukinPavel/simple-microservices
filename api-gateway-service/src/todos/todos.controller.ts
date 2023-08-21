@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import config from 'src/config';
 import Todo from 'src/types/Todo';
@@ -19,6 +28,18 @@ export class TodosController {
   addTodo(@Body('message') message: string) {
     const pattern = { cmd: 'add' };
     const todo = { message };
+    return this.client.send<any, Todo>(pattern, todo);
+  }
+
+  @Delete(':id')
+  deleteTodo(@Param('id') id: string) {
+    const pattern = { cmd: 'delete' };
+    return this.client.send<any, string>(pattern, id);
+  }
+
+  @Put()
+  updateTodo(@Body() todo: Todo) {
+    const pattern = { cmd: 'update' };
     return this.client.send<any, Todo>(pattern, todo);
   }
 }
