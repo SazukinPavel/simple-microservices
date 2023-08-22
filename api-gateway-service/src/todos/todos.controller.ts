@@ -11,6 +11,8 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import config from 'src/config';
 import Todo from 'src/types/Todo';
+import { AddTodoDto } from './dto/add-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 
 @Controller('todos')
 export class TodosController {
@@ -25,10 +27,9 @@ export class TodosController {
   }
 
   @Post()
-  addTodo(@Body('message') message: string) {
+  addTodo(@Body() dto: AddTodoDto) {
     const pattern = { cmd: 'add' };
-    const todo = { message };
-    return this.client.send<any, Todo>(pattern, todo);
+    return this.client.send<any, AddTodoDto>(pattern, dto);
   }
 
   @Delete(':id')
@@ -38,8 +39,8 @@ export class TodosController {
   }
 
   @Put()
-  updateTodo(@Body() todo: Todo) {
+  updateTodo(@Body() todo: UpdateTodoDto) {
     const pattern = { cmd: 'update' };
-    return this.client.send<any, Todo>(pattern, todo);
+    return this.client.send<any, UpdateTodoDto>(pattern, todo);
   }
 }
