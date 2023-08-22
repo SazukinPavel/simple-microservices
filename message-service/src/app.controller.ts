@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { Todo } from './entities/todo.entity';
+import { Message } from './entities/message.entity';
 
 @Controller()
 export class AppController {
@@ -13,13 +13,13 @@ export class AppController {
   }
 
   @MessagePattern({ cmd: 'add' })
-  add(todo: Todo) {
-    return this.appService.add(todo);
+  add(message: Message) {
+    return this.appService.add(message);
   }
 
   @MessagePattern({ cmd: 'update' })
-  update(todo: Todo) {
-    return this.appService.update(todo);
+  update(message: Message) {
+    return this.appService.update(message);
   }
 
   @MessagePattern({ cmd: 'delete' })

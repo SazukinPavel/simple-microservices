@@ -11,28 +11,28 @@ services:
       - .env
     ports:
       - $API_GATEWAY_PORT:$API_GATEWAY_PORT
-  simple-microservices-todos_service:
-    container_name: simple-microservices-todos_service
+  simple-microservices-message_service:
+    container_name: simple-microservices-message_service
     restart: always
-    hostname: $TODOS_SERVICE_HOST
+    hostname: $MESSAGE_SERVICE_HOST
     networks:
       - server
-    build: ./todos-service
+    build: ./message-service
     env_file:
       - .env
     depends_on:
-      - simple-microservices-todos_service_mysql
-  simple-microservices-todos_service_mysql:
-    container_name: simple-microservices-todos_service_mysql
+      - simple-microservices-message_service_mysql
+  simple-microservices-message_service_mysql:
+    container_name: simple-microservices-message_service_mysql
     image: mysql:5.7
     restart: unless-stopped
-    hostname: $TODOS_SERVICE_MYSQL_HOST
+    hostname: $MESSAGE_SERVICE_MYSQL_HOST
     env_file: .env
     environment:
-      MYSQL_DATABASE: $TODOS_SERVICE_MYSQL_DATABASE
-      MYSQL_ROOT_PASSWORD: $TODOS_SERVICE_MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MESSAGE_SERVICE_MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MESSAGE_SERVICE_MYSQL_ROOT_PASSWORD
     ports:
-      - $TODOS_SERVICE_MYSQL_PORT:$TODOS_SERVICE_MYSQL_PORT
+      - $MESSAGE_SERVICE_MYSQL_PORT:$MESSAGE_SERVICE_MYSQL_PORT
     volumes:
       - ./mysql-db:/docker-entrypoint-initdb.d/
     networks:

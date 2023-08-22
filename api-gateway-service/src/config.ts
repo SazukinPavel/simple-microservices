@@ -1,4 +1,4 @@
 export default {
-    todosServiceName: 'TODOS_SERVICE',
-    logsServiceName: 'LOGS_SERVICE',
-}
+  messageServiceName: 'MESSAGE_SERVICE',
+  logsServiceName: 'LOGS_SERVICE',
+};

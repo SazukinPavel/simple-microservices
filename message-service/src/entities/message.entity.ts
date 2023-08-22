@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Todo {
+export class Message {
   @PrimaryGeneratedColumn()
   id: number;
 
