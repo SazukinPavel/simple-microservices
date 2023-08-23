@@ -63,6 +63,32 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=$LOGS_SERVICE_DATABASE_ROOT_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD=$LOGS_SERVICE_DATABASE_ROOT_PASSWORD
       - MONGO_INITDB_DATABASE=$LOGS_SERVICE_DATABASE_NAME
+  simple-microservices-auth_service:
+    container_name: simple-microservices-auth_service
+    restart: always
+    hostname: $AUTH_SERVICE_HOST
+    networks:
+      - server
+    build: ./auth-service
+    env_file:
+      - .env
+    depends_on:
+      - simple-microservices-auth_pg
+  simple-microservices-auth_pg:
+    image: postgres
+    restart: always
+    hostname: $AUTH_SERVICE_PG_HOST
+    environment:
+      - POSTGRES_PASSWORD=$AUTH_SERVICE_PG_ROOT_PASSWORD
+      - POSTGRES_USER=$AUTH_SERVICE_PG_ROOT_USER
+      - POSTGRES_DB=$AUTH_SERVICE_PG_DATABASE
+    container_name: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - $AUTH_SERVICE_PG_PORT:$AUTH_SERVICE_PG_PORT
+    networks:
+      - server
 networks:
   server:
     driver: bridge
