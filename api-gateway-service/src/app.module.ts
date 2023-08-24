@@ -3,6 +3,7 @@ import { LogsModule } from './logs/logs.module';
 import { ConfigModule } from '@nestjs/config';
 import LogsMiddleware from './middlewares/http-logger.middleware';
 import { MessageModule } from './message/message.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { MessageModule } from './message/message.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AuthModule,
   ],
 })
 export class AppModule {
