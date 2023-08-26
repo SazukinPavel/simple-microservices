@@ -1,6 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
-import { User } from './entities/user.entity';
 import { MessagePattern } from '@nestjs/microservices';
 import LoginDto from './dto/login.dto';
 

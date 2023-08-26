@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import LoginDto from './dto/login.dto';
 import { CryptoService } from './services/crypto.service';
 import { JwtService } from './services/jwt.service';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
@@ -18,7 +19,7 @@ export class AppService {
   async register({ password, username }: LoginDto) {
     const userWithSameName = await this.findByUserName(username);
     if (userWithSameName) {
-      throw new BadRequestException('User with same name already exist');
+      throw new RpcException('User with same name already exist');
     }
 
     const encryptPassword = await this.cryptoService.crypt(password);
@@ -39,7 +40,7 @@ export class AppService {
   async login({ password, username }: LoginDto) {
     const userWithSameName = await this.findByUserName(username);
     if (!userWithSameName) {
-      throw new BadRequestException('User with same name doesnt exist');
+      throw new RpcException('User with same name doesnt exist');
     }
 
     const isPasswordCorrect = await this.cryptoService.compare(
@@ -47,7 +48,7 @@ export class AppService {
       userWithSameName.password,
     );
     if (!isPasswordCorrect) {
-      throw new BadRequestException('Wrong password');
+      throw new RpcException('Wrong password');
     }
 
     return {
