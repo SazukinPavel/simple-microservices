@@ -1,6 +1,9 @@
 import { User } from 'src/types/User';
 
 export default interface AuthResponseDto {
-  token: string;
-  user: User;
+  result: boolean;
+  data: {
+    token: string;
+    user: User;
+  };
 }
