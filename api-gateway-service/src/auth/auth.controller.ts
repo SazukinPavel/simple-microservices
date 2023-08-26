@@ -1,8 +1,9 @@
-import { Body, Controller, Inject, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { Request } from 'express';
 import { AuthService } from './auth.service';
+import Request from 'src/types/Request';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +20,8 @@ export class AuthController {
   }
 
   @Post('me')
+  @UseGuards(AuthGuard)
   me(@Req() req: Request) {
-    return this.authService.me(req);
+    return req.auth;
   }
 }
