@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import LoginDto from './dto/login.dto';
 import { CryptoService } from './services/crypto.service';
 import { JwtService } from './services/jwt.service';
 import { RpcException } from '@nestjs/microservices';
+import { UserEntity } from './entities/user.entity';
+import { LoginDto } from '@common/dto/auth';
 
 @Injectable()
 export class AppService {
   constructor(
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
     private readonly cryptoService: CryptoService,
     private readonly jwtService: JwtService,
   ) {}
@@ -72,7 +72,7 @@ export class AppService {
     return this.usersRepository.findOneBy({ username });
   }
 
-  private getToken(user: User) {
+  private getToken(user: UserEntity) {
     return this.jwtService.sign({ id: user.id });
   }
 }

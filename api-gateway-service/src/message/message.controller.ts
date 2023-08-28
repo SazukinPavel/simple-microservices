@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import config from 'src/config';
-import { AddMessageDto } from './dto/add-message.dto';
-import { UpdateMessageDto } from './dto/update-message.dto';
-import Message from 'src/types/Message';
+import { Message } from '@common/message';
+import { AddMessageApiDto } from './dto/add-message.dto';
+import { AddMessageDto, UpdateMessageDto } from '@common/dto/message';
+import { UpdateMessageApiDto } from './dto/update-message.dto';
 
 @Controller('messages')
 export class MessageController {
@@ -27,7 +28,7 @@ export class MessageController {
   }
 
   @Post()
-  addMessage(@Body() dto: AddMessageDto) {
+  addMessage(@Body() dto: AddMessageApiDto) {
     const pattern = { cmd: 'add' };
     return this.client.send<any, AddMessageDto>(pattern, dto);
   }
@@ -39,7 +40,7 @@ export class MessageController {
   }
 
   @Put()
-  updateMessage(@Body() dto: UpdateMessageDto) {
+  updateMessage(@Body() dto: UpdateMessageApiDto) {
     const pattern = { cmd: 'update' };
     return this.client.send<any, UpdateMessageDto>(pattern, dto);
   }

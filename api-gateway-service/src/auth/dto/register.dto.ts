@@ -1,6 +1,7 @@
 import { IsString, MaxLength, MinLength } from 'class-validator';
+import { RegisterDto } from '@common/dto/auth/';
 
-export class RegisterDto {
+export class RegisterApiDto implements RegisterDto {
   @IsString()
   username: string;
 

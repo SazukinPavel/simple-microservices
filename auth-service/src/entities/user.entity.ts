@@ -4,9 +4,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '@common/user';
 
 @Entity()
-export class User {
+export class UserEntity implements User {
   @PrimaryGeneratedColumn()
   id: number;
 

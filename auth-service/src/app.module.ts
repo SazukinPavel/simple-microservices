@@ -3,9 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { JwtService } from './services/jwt.service';
 import { CryptoService } from './services/crypto.service';
+import { UserEntity } from './entities/user.entity';
 
 @Module({
   imports: [
@@ -17,10 +17,10 @@ import { CryptoService } from './services/crypto.service';
       username: process.env.AUTH_SERVICE_PG_ROOT_USER,
       password: process.env.AUTH_SERVICE_PG_ROOT_PASSWORD,
       database: process.env.AUTH_SERVICE_PG_DATABASE,
-      entities: [User],
+      entities: [UserEntity],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UserEntity]),
   ],
   controllers: [AppController],
   providers: [AppService, JwtService, CryptoService],

@@ -1,12 +1,13 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Message } from '@common/message';
 
 @Entity()
-export class Message {
+export class MessageEntity implements Message {
   @PrimaryGeneratedColumn()
   id: number;
 

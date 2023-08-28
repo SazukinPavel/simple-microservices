@@ -1,25 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Log } from '@common/log';
 
-export type LogDocument = HydratedDocument<Log>;
+export type LogDocument = HydratedDocument<LogEntity>;
 
 @Schema()
-export class Log {
-
+export class LogEntity implements Log {
   @Prop()
-  level: string
+  level: string;
 
   @Prop({ type: Object })
-  data: any
+  data: any;
 
   @Prop({ type: Object })
-  stack: any
+  stack: any;
 
   @Prop()
-  context: String
+  context: String;
 
   @Prop({ default: Date.now() })
-  ts: number
+  ts: number;
 }
 
-export const LogSchema = SchemaFactory.createForClass(Log);
+export const LogSchema = SchemaFactory.createForClass(LogEntity);

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Message } from './entities/message.entity';
+import { MessageEntity } from './entities/message.entity';
 
 @Module({
   imports: [
@@ -13,10 +13,10 @@ import { Message } from './entities/message.entity';
       username: process.env.MESSAGE_SERVICE_MYSQL_ROOT_USER,
       password: process.env.MESSAGE_SERVICE_MYSQL_ROOT_PASSWORD,
       database: process.env.MESSAGE_SERVICE_MYSQL_DATABASE,
-      entities: [Message],
+      entities: [MessageEntity],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Message]),
+    TypeOrmModule.forFeature([MessageEntity]),
   ],
   controllers: [AppController],
   providers: [AppService],

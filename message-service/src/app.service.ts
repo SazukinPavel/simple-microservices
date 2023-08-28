@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from './entities/message.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MessageEntity } from './entities/message.entity';
+import { Message } from '@common/message';
 
 @Injectable()
 export class AppService {
   constructor(
-    @InjectRepository(Message)
-    private messageRepository: Repository<Message>,
+    @InjectRepository(MessageEntity)
+    private messageRepository: Repository<MessageEntity>,
   ) {}
 
   async get() {

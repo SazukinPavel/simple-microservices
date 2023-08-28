@@ -2,9 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request } from 'express';
 import config from 'src/config';
-import AuthResponseDto from './dto/auth-response.dto';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { AuthResponseDto, LoginDto, RegisterDto } from '@common/dto/auth';
 
 @Injectable()
 export class AuthService {

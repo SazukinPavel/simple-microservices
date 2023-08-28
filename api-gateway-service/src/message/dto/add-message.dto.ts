@@ -1,6 +1,7 @@
 import { IsString } from 'class-validator';
+import { AddMessageDto } from '@common/dto/message/';
 
-export class AddMessageDto {
+export class AddMessageApiDto implements AddMessageDto {
   @IsString()
   message: string;
 }

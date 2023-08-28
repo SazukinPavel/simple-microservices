@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern } from '@nestjs/microservices';
-import LoginDto from './dto/login.dto';
+import { LoginDto, RegisterDto } from '@common/dto/auth';
 
 @Controller()
 export class AppController {
@@ -13,7 +13,7 @@ export class AppController {
   }
 
   @MessagePattern({ cmd: 'register' })
-  register(dto: LoginDto) {
+  register(dto: RegisterDto) {
     return this.appService.register(dto);
   }
 
