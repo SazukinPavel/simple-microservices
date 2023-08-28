@@ -2,3 +2,5 @@
 mongodb
 mysql-db
 pgdata
+.vscode
+.idea

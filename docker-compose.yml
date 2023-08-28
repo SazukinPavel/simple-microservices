@@ -6,7 +6,9 @@ services:
     hostname: API_GATEWAY_HOST
     networks:
       - server
-    build: ./api-gateway-service
+    build:
+      dockerfile: ./api-gateway-service/Dockerfile
+      context: .
     env_file:
       - .env
     ports:
@@ -17,7 +19,9 @@ services:
     hostname: $MESSAGE_SERVICE_HOST
     networks:
       - server
-    build: ./message-service
+    build:
+      dockerfile: ./message-service/Dockerfile
+      context: .
     env_file:
       - .env
     depends_on:
@@ -43,7 +47,9 @@ services:
     hostname: $LOGS_SERVICE_HOST
     networks:
       - server
-    build: ./logs-service
+    build:
+      context: .
+      dockerfile: ./logs-service/Dockerfile
     env_file:
       - .env
     depends_on:
@@ -69,7 +75,9 @@ services:
     hostname: $AUTH_SERVICE_HOST
     networks:
       - server
-    build: ./auth-service
+    build:
+      context: .
+      dockerfile: ./auth-service/Dockerfile
     env_file:
       - .env
     depends_on:
