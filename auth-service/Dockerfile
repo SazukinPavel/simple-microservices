@@ -2,11 +2,12 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY /auth-service/ /app/auth-service
+COPY /common /app/common
 
 RUN yarn
 
-COPY . .
+WORKDIR /app/auth-service
 
 RUN yarn build
 

@@ -2,11 +2,12 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY /message-service/ /app/message-service
+COPY /common /app/common
 
 RUN yarn
 
-COPY . .
+WORKDIR /app/message-service
 
 RUN yarn build
 
