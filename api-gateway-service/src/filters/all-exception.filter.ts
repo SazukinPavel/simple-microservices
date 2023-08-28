@@ -16,7 +16,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     let httpStatus = 500;
-    let responseBody = { message: '', statusCode: httpStatus };
+    let responseBody = { message: '', statusCode: httpStatus, result: false };
 
     if ((exception as unknown as any).response) {
       const data = exception as unknown as any;
@@ -33,7 +33,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     responseBody = responseBody.message
       ? responseBody
       : {
-          statusCode: httpStatus,
+          ...responseBody,
           message: exception.message,
         };
 
