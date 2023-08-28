@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request } from 'express';
 import config from 'src/config';
@@ -12,6 +12,9 @@ export class AuthService {
 
   me(req: Request) {
     const token = req.headers['authorization'];
+    if (!token || !token?.split(' ')[1]) {
+      throw new ForbiddenException();
+    }
 
     const pattern = { cmd: 'me' };
     return this.authClient.send<AuthResponseDto, string>(

@@ -8,13 +8,13 @@ export class AuthMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
-      const { data } = await this.authService.me(req).toPromise();
+      this.authService.me(req).subscribe(({ data }) => {
+        req.auth = data;
 
-      req.auth = data;
-    } catch (e) {
-      console.log(e);
+        next();
+      });
+    } catch {
+      next();
     }
-
-    next();
   }
 }
