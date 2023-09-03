@@ -5,10 +5,11 @@ WORKDIR /app
 COPY /auth-service/ /app/auth-service
 COPY /common /app/common
 
-RUN yarn
-
 WORKDIR /app/auth-service
+
+RUN npm install --force -g @nestjs/cli yarn
+RUN yarn
 
 RUN yarn build
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:prod" ]

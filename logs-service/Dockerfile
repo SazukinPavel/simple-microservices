@@ -5,10 +5,11 @@ WORKDIR /app
 COPY /logs-service/ /app/logs-service
 COPY /common /app/common
 
-RUN yarn
-
 WORKDIR /app/logs-service
+
+RUN npm install --force -g @nestjs/cli yarn
+RUN yarn
 
 RUN yarn build
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:prod" ]
