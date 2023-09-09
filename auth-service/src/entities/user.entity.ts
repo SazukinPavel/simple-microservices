@@ -14,7 +14,7 @@ export class UserEntity implements User {
   @Column({ unique: true })
   username: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @CreateDateColumn()

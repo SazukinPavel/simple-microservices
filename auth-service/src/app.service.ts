@@ -32,6 +32,8 @@ export class AppService {
 
     const savedUser = await this.usersRepository.save(user);
 
+    delete savedUser.password;
+
     return {
       result: true,
       data: { token: this.getToken(savedUser), user: savedUser },
@@ -52,6 +54,7 @@ export class AppService {
       throw new RpcException('Wrong password');
     }
 
+    delete userWithSameName.password;
     return {
       result: true,
       data: { token: this.getToken(userWithSameName), user: userWithSameName },
@@ -70,7 +73,10 @@ export class AppService {
   }
 
   private findByUserName(username: string) {
-    return this.usersRepository.findOneBy({ username });
+    return this.usersRepository.findOne({
+      where: { username },
+      select: ['username', 'id', 'password', 'role', 'createdAt'],
+    });
   }
 
   private getToken(user: UserEntity) {
