@@ -1,7 +1,7 @@
-import Response from "../../base/Response";
+import {ServiceResponse} from "../../base/";
 import { User } from "../../user";
 
-type AuthResponseDto = Response<{
+type AuthResponseDto = ServiceResponse<{
   token: string;
   user: User;
 }>;

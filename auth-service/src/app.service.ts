@@ -5,7 +5,8 @@ import { CryptoService } from './services/crypto.service';
 import { JwtService } from './services/jwt.service';
 import { RpcException } from '@nestjs/microservices';
 import { UserEntity } from './entities/user.entity';
-import { LoginDto } from '@common/dto/auth';
+import { LoginDto, AuthResponseDto } from '@common/dto/auth';
+import { ServiceResponse } from '@common/base';
 
 @Injectable()
 export class AppService {
@@ -16,7 +17,7 @@ export class AppService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ password, username }: LoginDto) {
+  async register({ password, username }: LoginDto): Promise<AuthResponseDto> {
     const userWithSameName = await this.findByUserName(username);
     if (userWithSameName) {
       throw new RpcException('User with same name already exist');
@@ -37,7 +38,7 @@ export class AppService {
     };
   }
 
-  async login({ password, username }: LoginDto) {
+  async login({ password, username }: LoginDto): Promise<AuthResponseDto> {
     const userWithSameName = await this.findByUserName(username);
     if (!userWithSameName) {
       throw new RpcException('User with same name doesnt exist');
@@ -57,7 +58,7 @@ export class AppService {
     };
   }
 
-  async me(token: string) {
+  async me(token: string): Promise<AuthResponseDto> {
     const { id } = this.jwtService.verify(token) as any;
 
     const realUser = await this.usersRepository.findOneBy({ id: +id });
