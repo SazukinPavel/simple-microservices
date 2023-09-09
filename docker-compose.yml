@@ -10,7 +10,7 @@ services:
       dockerfile: ./api-gateway-service/Dockerfile
       context: .
     env_file:
-      - .env
+      - .env.development
     ports:
       - $API_GATEWAY_PORT:$API_GATEWAY_PORT
   simple-microservices-message_service:
@@ -23,7 +23,7 @@ services:
       dockerfile: ./message-service/Dockerfile
       context: .
     env_file:
-      - .env
+      - .env.development
     depends_on:
       - simple-microservices-message_service_mysql
   simple-microservices-message_service_mysql:
@@ -31,7 +31,7 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     hostname: $MESSAGE_SERVICE_MYSQL_HOST
-    env_file: .env
+    env_file: .env.development
     environment:
       MYSQL_DATABASE: $MESSAGE_SERVICE_MYSQL_DATABASE
       MYSQL_ROOT_PASSWORD: $MESSAGE_SERVICE_MYSQL_ROOT_PASSWORD
@@ -51,7 +51,7 @@ services:
       context: .
       dockerfile: ./logs-service/Dockerfile
     env_file:
-      - .env
+      - .env.development
     depends_on:
       - simple-microservices-logs_mongo
   simple-microservices-logs_mongo:
@@ -59,6 +59,8 @@ services:
     container_name: simple-microservices-logs_mongo
     restart: unless-stopped
     hostname: $LOGS_SERVICE_MONGO_HOST
+    env_file:
+      - .env.development
     networks:
       - server
     volumes:
@@ -79,7 +81,7 @@ services:
       context: .
       dockerfile: ./auth-service/Dockerfile
     env_file:
-      - .env
+      - .env.development
     depends_on:
       - simple-microservices-auth_pg
   simple-microservices-auth_pg:
@@ -91,6 +93,8 @@ services:
       - POSTGRES_USER=$AUTH_SERVICE_PG_ROOT_USER
       - POSTGRES_DB=$AUTH_SERVICE_PG_DATABASE
     container_name: postgres
+    env_file:
+      - .env.development
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
