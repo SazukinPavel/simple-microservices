@@ -1,29 +1,30 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { Message } from '@common/message';
+import { AddMessageDto, UpdateMessageDto } from '@common/dto/message';
+import { ServiceRequest } from '@common/base';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern({ cmd: 'get' })
-  get() {
-    return this.appService.get();
+  get({ user }: ServiceRequest<any>) {
+    return this.appService.get(user);
   }
 
   @MessagePattern({ cmd: 'add' })
-  add(message: Message) {
-    return this.appService.add(message);
+  add({ user, data }: ServiceRequest<AddMessageDto>) {
+    return this.appService.add(data, user);
   }
 
   @MessagePattern({ cmd: 'update' })
-  update(message: Message) {
-    return this.appService.update(message);
+  update({ user, data }: ServiceRequest<UpdateMessageDto>) {
+    return this.appService.update(data, user);
   }
 
   @MessagePattern({ cmd: 'delete' })
-  delete(id: string) {
-    return this.appService.delete(id);
+  delete({ data, user }: ServiceRequest<string>) {
+    return this.appService.delete(data, user);
   }
 }

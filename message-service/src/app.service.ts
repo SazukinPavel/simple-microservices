@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MessageEntity } from './entities/message.entity';
-import { Message } from '@common/message';
+import { AddMessageDto, UpdateMessageDto } from '@common/dto/message';
 import { ServiceResponse } from '@common/base';
+import { User } from '@common/user';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
@@ -12,29 +14,53 @@ export class AppService {
     private messageRepository: Repository<MessageEntity>,
   ) {}
 
-  async get(): Promise<ServiceResponse<MessageEntity[]>> {
-    return { result: true, data: await this.messageRepository.find() };
+  async get(user: User): Promise<ServiceResponse<MessageEntity[]>> {
+    return {
+      result: true,
+      data: await this.messageRepository.find({ where: { ownerId: user.id } }),
+    };
   }
 
-  async add(message: Message): Promise<ServiceResponse<MessageEntity>> {
+  async add(
+    message: AddMessageDto,
+    user: User,
+  ): Promise<ServiceResponse<MessageEntity>> {
     const newMessage = this.messageRepository.create({ ...message });
 
-    const data = await this.messageRepository.save(newMessage);
-
-    return { result: true, data };
-  }
-
-  async update(message: Message): Promise<ServiceResponse<MessageEntity>> {
-    await this.messageRepository.update(message.id, {
-      ...message,
+    const data = await this.messageRepository.save({
+      ...newMessage,
+      ownerId: user.id,
     });
 
-    const data = await this.messageRepository.findOneBy({ id: message.id });
+    return { result: true, data };
+  }
+
+  async update(
+    dto: UpdateMessageDto,
+    user: User,
+  ): Promise<ServiceResponse<MessageEntity>> {
+    const message = await this.messageRepository.findOneBy({ id: dto.id });
+
+    if (user.id !== message.ownerId) {
+      throw new RpcException('You dont have rights edit this messsage');
+    }
+
+    await this.messageRepository.update(dto.id, {
+      ...dto,
+    });
+
+    const data = await this.messageRepository.findOneBy({ id: dto.id });
 
     return { result: true, data };
   }
 
-  async delete(id: string): Promise<ServiceResponse<any>> {
+  async delete(id: string, user: User): Promise<ServiceResponse<any>> {
+    const message = await this.messageRepository.findOneBy({ id: +id });
+
+    if (user.id !== message.ownerId) {
+      throw new RpcException('You dont have rights delete this message');
+    }
+
     await this.messageRepository.delete(id);
 
     return { result: true, data: {} };

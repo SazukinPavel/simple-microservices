@@ -14,6 +14,9 @@ export class MessageEntity implements Message {
   @Column()
   message: string;
 
+  @Column()
+  ownerId: number;
+
   @CreateDateColumn()
   ts: Date;
 }
