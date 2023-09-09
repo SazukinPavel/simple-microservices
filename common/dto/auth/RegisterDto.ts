@@ -1,9 +1,8 @@
-
 interface RegisterDto {
     username: string;
-  
+
     password: string;
-  }
-  
-  export default RegisterDto
+}
+
+export default RegisterDto
   

@@ -1,6 +1,6 @@
-import { User } from "../user";
+import {User} from "../user";
 
 export default interface Response<T> {
-  data: T;
-  user: User;
+    data: T;
+    user: User;
 }

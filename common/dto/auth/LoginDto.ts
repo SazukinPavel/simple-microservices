@@ -1,8 +1,7 @@
-
 interface LoginDto {
-  username: string;
+    username: string;
 
-  password: string;
+    password: string;
 }
 
 export default LoginDto

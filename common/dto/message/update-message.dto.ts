@@ -1,6 +1,5 @@
-
 export default interface UpdateMessageDto {
-  id: number;
+    id: number;
 
-  message: string;
+    message: string;
 }
