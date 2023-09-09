@@ -6,6 +6,6 @@
 
 ## Project Setup (with dev .env)
 ```
-docker compose build
-docker compose up
+docker compose --env-file .env.development build
+docker compose --env-file .env.development up
 ```
